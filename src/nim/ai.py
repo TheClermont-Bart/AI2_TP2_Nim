@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from math import gamma
 from typing import Literal
 
-from nim import Action, Board, Probability, QValue
+from nim import Action, Board, Probability, QValue, available_actions
 
 type Algorithm = Literal["greedy", "epsilon-greedy"]
 
@@ -11,8 +12,8 @@ class QLearning:
     def __init__(
         self,
         epsilon: Probability = 0.1,
-        alpha: Probability = 0.0,
-        gamma: Probability = 0.0,
+        alpha: Probability = 0.5,
+        gamma: Probability = 0.7,
     ):
         r"""Initialise l'IA.
 
@@ -27,8 +28,11 @@ class QLearning:
 
                 TODO: epsilon (5 points)
                     Identifier une valeur par défaut
-                    et documenter le paramètre alpha de manière à expliquer
+                    et documenter le paramètre epsilon de manière à expliquer
                     le sens du paramètre et le choix de sa valeur.
+
+                Epsilon = chance de jouer un coup au hasard pour decouvrir
+
             alpha:
                 Le facteur d'apprentissage.
 
@@ -36,6 +40,10 @@ class QLearning:
                     Identifier une valeur par défaut
                     et documenter le paramètre alpha de manière à expliquer
                     le sens du paramètre et le choix de sa valeur.
+
+                Alpha = Apprentisage du passer.
+                Chiffre entre 0(On apprend rien) et 1(On oublie le passer).
+
             gamma:
                 Le facteur d'actualisation.
 
@@ -94,6 +102,11 @@ class QLearning:
         # TODO: get_q_value (10 points)
         #   Tester et implémenter get_q_value
 
+        if self.q.get((state, action)):
+            return self.q[(state, action)]
+        else:
+            return 0
+
     def update_q_value(
         self,
         state: Board,
@@ -102,7 +115,7 @@ class QLearning:
         reward: QValue,
         future_rewards: QValue,
     ) -> None:
-        r"""Met à jour le Q-value.
+        """Met à jour le Q-value.
 
         Args:
             state:
@@ -120,7 +133,7 @@ class QLearning:
 
         .. math::
 
-            Q(S, A) <- Q_{old} + \alpha \cdot (Q_{new} - Q_{old})
+            Q(S, A) <- Q_{old} + \alpha * (Q_{new} - Q_{old})
 
         telle que :math:`Q_{old}` est l'ancienne Q-Value, :math:`\alpha` est le
         taux d'apprentissage, et :math:`Q_{new}` est la somme de la récompense
@@ -130,7 +143,15 @@ class QLearning:
         """
         # TODO: update_q_value (10 points)
         #   Tester et implémenter update_q_value
-        raise NotImplementedError
+
+        q_new = reward + future_rewards * self.gamma
+        #Somme de la récompense actuelle + l'estimation des récompenses futures * par le facteur d'actualisation.
+
+        q = old_q + self.alpha * (q_new - old_q)
+        #Q_{old} + alpha * (Q_{new} - Q_{old})
+
+        self.q[(state, action)] = q
+
 
     def best_future_reward(self, state: Board) -> QValue:
         """Estime la meilleure récompense future étant donné un état `state`.
@@ -144,7 +165,21 @@ class QLearning:
         """
         # TODO: best_future_reward (10 points)
         #   Tester et implémenter best_future_reward
-        raise NotImplementedError
+
+        actions = list(available_actions(state)) #List des coups possibles
+
+        if len(actions) == 0:
+            return 0
+
+        best_action = self.get_q_value(state, actions[0])
+        # [0] car doit en choisir un avant de comparer au autre
+
+        for action in actions: #Pour chaque action, verifier la valeur de Q
+            result = self.get_q_value(state, action)
+            if result > best_action:
+                best_action = result
+
+        return best_action
 
     def choose_action(self, state: Board, train: bool = True) -> Action:
         """Étant donné un état, retourne une action à entreprendre.

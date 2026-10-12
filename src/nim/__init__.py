@@ -79,6 +79,12 @@ Exemples:
 type QValue = float | int
 # TODO: QValue (5 points)
 #   Documenter le type nim.QValue
+"""
+Le QValue est un nombre qui estime la recompense d'un ensemble etat (s) et action (a). 
+Une valeur proche de 1 indique un coup qui mène vers une victoire.
+Une valeur proche de -1 un coup qui mène vers une défaite.
+Une valeur de 0 on ne sait pas encore.
+"""
 
 
 def new_random_board(num_heaps: int | None = None) -> Board:
@@ -124,12 +130,41 @@ def transition(board: Board, action: Action) -> Board:
     """
     # TODO: transition (10 points)
     #   Tester et implémenter nim.transition
+    pile = list(board)
+    i,j = action
+
+    if  i < 0 or i >= len(pile):
+        raise IndexError("`i` qui ne corresponde à aucun tas lève une erreur.")
+
+    if j < 0 or j > pile[i]:
+        raise ValueError("`j` trop grand ou trop petit pour la quantité d'objets dans la tas math:`i` lève une erreur.")
+
+    pile[i] -= j
+    return tuple(pile)
 
 
 def available_actions(board_data: Board) -> Collection[Action]:
     # TODO: available_actions (10 points)
     #    Documenter et implémenter nim.available_actions
-    ...
+    """
+    Prends les donnees du board sous forme (2,1,0)
+    et retourne une liste d'actions valides.
+
+    Args:
+        board_data: Le plateau recu representer par le nombre d'objet a l'index de chaque pile
+        Example ; (2,1,0) 2 objets sur la pile 0, 1 objets sur la pile 1, etc.
+
+    Returns:
+        Retourne une liste des actions possibles.
+        Example ; args (2,1,0) retourne (0,1),(0,2),(1,1) qui represente (numero de pile, nombre retirer)
+    """
+    action_list = [] #Liste des actions possibles
+
+    for pile, obj in enumerate(board_data):
+        for i in range(1, obj+1):
+            action_list.append((pile, i))
+
+    return action_list
 
 
 class Nim:
