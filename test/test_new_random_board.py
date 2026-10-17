@@ -21,7 +21,10 @@ def test_num_heaps_random():
 def test_num_heaps_provided():
     # TODO: test_num_heaps_provided (3 points)
     #   Implémenter test_num_heaps_provided
-    ...
+    new_random_board(4) #Creer 4 piles
+
+    assert len(new_random_board(4)) == 4
+    assert all(1 <= tas <= 10 for tas in new_random_board(4)) #Verifie qu'il a bien une chiffre entre 1 et 10 dans chaque piles
 
 
 def test_num_heaps_not_provided():

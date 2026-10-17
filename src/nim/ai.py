@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from math import gamma
+import random
 from typing import Literal
 
 from nim import Action, Board, Probability, QValue, available_actions
@@ -198,4 +199,26 @@ class QLearning:
         """
         # TODO: choose_action (10 points)
         #   Tester et implémenter choose_action
+
+        actions = list(available_actions(state)) # List des coups possibles
+
+        best_action = actions[0]
+        best_q = self.get_q_value(state, best_action)
+
+        for action in actions:
+            result = self.get_q_value(state, action)
+            if result > best_q:
+                best_action = action
+                best_q = result
+
+        random_value = random.random()
+
+        if train and random_value < self.epsilon:
+            random_action = random.choice(actions)
+            return random_action
+
+        return best_action
+
+
+
 

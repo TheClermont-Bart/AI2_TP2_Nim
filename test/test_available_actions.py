@@ -51,3 +51,11 @@ def test_best_reward():
 
     assert ai.best_future_reward((1,1)) == 0
     assert ai.best_future_reward((1,1)) == 0
+
+def test_action():
+    ai = QLearning()
+    state = (2,1)
+    ai.q[(state, (0, 2))] = 0.8
+    ai.q[(state, (1, 1))] = 0.5
+
+    assert ai.choose_action(state, train=False) == (0,2)

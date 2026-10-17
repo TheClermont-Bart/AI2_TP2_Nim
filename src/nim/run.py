@@ -68,7 +68,7 @@ def play(
         game.move(action)
         new_board = game.board
         ui.show_transition(old_board, action, new_board)
-        ui.show_board(new_board)
+        #ui.show_board(new_board) J'ai enlever ici car j'aimais mieux comment c'etait presenter dans le terminal
         last_step[current_player] = (old_board, action)
         if game.winner is not None:
             try:
@@ -140,7 +140,7 @@ def run(
     train(ai, num_train_iterations=num_train_iterations)
     game = Nim(board=initial_board)
     play(game=game, ai=ai, human_player=human_player)
-    
+
 class UserInterface:
     def show_board(self, board: Board) -> None:
         print()
