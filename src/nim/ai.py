@@ -198,4 +198,4 @@ class QLearning:
         """
         # TODO: choose_action (10 points)
         #   Tester et implémenter choose_action
-        raise NotImplementedError
+

@@ -31,6 +31,7 @@ def test_two_stack_one_object():
 
 
 def test_transition():
+    # Changement d'etat
     assert (0, 1, 0) == transition((2,1,0),(0,2))
     assert (2, 0, 0) == transition((2,1,0),(1,1))
 

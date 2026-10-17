@@ -9,15 +9,16 @@ from nim.ai import QLearning
 type Step = tuple[Board, Action]
 """
 Un tour de jeu.
-
 Un tour de jeu est la paire :math:`s, a`
 telle que :math:`s` est l'état ou le plateau du jeu 
 avant d'y poser l'action :math:`a`.
-
 Exemples:
     >>> ( coup_final := ((0, 2, 0, 0), (1, 2)) )
     ((0, 2, 0, 0), (1, 2))
 """
+
+def main():
+    run()
 
 
 def play(
@@ -27,7 +28,6 @@ def play(
     ui: UserInterface | None = None,
 ):
     """Joue une partie de Nim.
-
     Args:
         game:
             Un jeu de nim avec un plateau neuf.
@@ -65,11 +65,11 @@ def play(
         else:
             action = ai.choose_action(game.board)
 
-        new_board = game.move(action)
+        game.move(action)
+        new_board = game.board
         ui.show_transition(old_board, action, new_board)
         ui.show_board(new_board)
         last_step[current_player] = (old_board, action)
-
         if game.winner is not None:
             try:
                 player = cast(Player, game.winner)
@@ -83,7 +83,6 @@ def play(
                 ai.update(board, action, new_board, -1)
             except KeyError:
                 pass
-
             ui.show_gameover(human_player, game.winner, old_board)
             break
         else:
@@ -91,11 +90,8 @@ def play(
                 ai.update(*last_step[current_player], new_board, 0)
             except KeyError:
                 pass
-
-
 def train(ai: QLearning, num_train_iterations: int):
     """Fait jouer un nombre de parties à l'IA pour s'entraîner
-
     Args:
         ai:
            L'intelligence à entraîner
@@ -108,7 +104,7 @@ def train(ai: QLearning, num_train_iterations: int):
 
 
 def run(
-    human_player: Player | None,
+    human_player: Player | None = None,
     num_train_iterations: int = 0,
     initial_board: Board | None = None,
     epsilon: Probability | None = None,
@@ -116,7 +112,6 @@ def run(
     gamma: Probability | None = None,
 ):
     """Entraïne l'adversaire et lance une partie contre lui.
-
     Args:
         human_player:
             Détermine si le joueur joue premier ou deuxième.
@@ -141,15 +136,11 @@ def run(
     alpha = alpha or random.randint(0, 100) / 100
     gamma = gamma or random.randint(0, 100) / 100
     initial_board = initial_board or new_random_board()
-
     ai = QLearning(epsilon=epsilon, alpha=alpha, gamma=gamma)
     train(ai, num_train_iterations=num_train_iterations)
-
     game = Nim(board=initial_board)
-
     play(game=game, ai=ai, human_player=human_player)
-
-
+    
 class UserInterface:
     def show_board(self, board: Board) -> None:
         print()
@@ -157,32 +148,26 @@ class UserInterface:
         for i, count in enumerate(board):
             print(f"Tas {i} : {count}")
         print()
-
     def show_thinking(self, player: Player, board: Board, is_human: bool) -> None:
         if is_human:
             print(f"Au tour du joueur {player} (Humain).")
         else:
             print(f"Au tour du joueur {player} (IA)...")
-
     def select_action(self, player: Player, board: Board) -> Action:
         while True:
             try:
                 heap = int(input("Choisissez une heap : "))
                 count = int(input("Nombre d'objets à retirer : "))
-
                 if 0 <= heap < len(board) and 1 <= count <= board[heap]:
                     return (heap, count)
-
                 print("Mouvement invalide. Réessayez.")
             except ValueError:
                 print("Veuillez entrer des nombres entiers.")
-
     def show_transition(
         self, old_board: Board, action: Action, new_board: Board
     ) -> None:
         heap, count = action[0], action[1]
         print(f"-> Action : {count} objet(s) retiré(s) du tas {heap}.")
-
     def show_gameover(
         self, human_player: Player | None, winner: Player, board: Board
     ) -> None:
