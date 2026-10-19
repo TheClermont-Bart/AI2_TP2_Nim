@@ -105,8 +105,8 @@ def train(ai: QLearning, num_train_iterations: int):
 
 def run(
     human_player: Player | None = None,
-    num_train_iterations: int = 0,
-    initial_board: Board | None = None,
+    num_train_iterations: int = 100, #Nombre de partie d'entrainement avant de jouer
+    initial_board: Board | None = (3,),
     epsilon: Probability | None = None,
     alpha: Probability | None = None,
     gamma: Probability | None = None,

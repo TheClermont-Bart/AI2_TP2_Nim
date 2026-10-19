@@ -8,7 +8,6 @@ from nim import Action, Board, Probability, QValue, available_actions
 
 type Algorithm = Literal["greedy", "epsilon-greedy"]
 
-
 class QLearning:
     def __init__(
         self,
@@ -32,7 +31,10 @@ class QLearning:
                     et documenter le paramètre epsilon de manière à expliquer
                     le sens du paramètre et le choix de sa valeur.
 
-                Epsilon = chance de jouer un coup au hasard pour decouvrir
+                Epsilon = Probabilité de jouer un coup au hasard pour explorer plus que le meilleur coup connyu(exploit)
+                0 = Explore jamais, joue toujours meilleur coup connu.
+                1 = Joue toujours au hasard
+                Avec 0,1 on ne joue pas avec beaucoup de hasard et on s'appuie plus sur les meilleurs coup
 
             alpha:
                 Le facteur d'apprentissage.
@@ -42,8 +44,10 @@ class QLearning:
                     et documenter le paramètre alpha de manière à expliquer
                     le sens du paramètre et le choix de sa valeur.
 
-                Alpha = Apprentisage du passer.
-                Chiffre entre 0(On apprend rien) et 1(On oublie le passer).
+                Alpha = Controle l'importance de la nouvelle information par rapport a l'ancienne
+                0 = Ignore tout donc ne change rien
+                1 = Remplacment entierement l'ancienne valeur
+                Avec 0.5 permet d'apprendre sans effacer l'estimation précèdente d'un seul coup.
 
             gamma:
                 Le facteur d'actualisation.
@@ -64,6 +68,8 @@ class QLearning:
 
                 TODO: gamma (2 points)
                     Identifier une valeur par défaut
+
+                Avec 0.7 on accorde beaucoup d'importance au récompense futures.
 
 
         Le dictionnaire d'apprentissage Q associe les paires (état, action) à
@@ -172,15 +178,15 @@ class QLearning:
         if len(actions) == 0:
             return 0
 
-        best_action = self.get_q_value(state, actions[0])
+        best_q = self.get_q_value(state, actions[0])
         # [0] car doit en choisir un avant de comparer au autre
 
         for action in actions: #Pour chaque action, verifier la valeur de Q
             result = self.get_q_value(state, action)
-            if result > best_action:
-                best_action = result
+            if result > best_q:
+                best_q = result
 
-        return best_action
+        return best_q
 
     def choose_action(self, state: Board, train: bool = True) -> Action:
         """Étant donné un état, retourne une action à entreprendre.

@@ -193,5 +193,64 @@ TODO: discussion (10 points bonus)
     :math:`\epsilon`, :math:`\alpha` et :math:`\gamma`.
     Commentez vos observations et expliquez votre méthodologie.
 
+J'ai utilisé une seul pile(3,) pour pouvoir mieux observer les changements selon Epsilon, Alpha et Gamma.
+Je répète toujours la même action afin de pouvoir comparer mes résultat.
+Dans mon exercice,  j'enleve 1 de la pile 0 et je fais 4 parties.
+
+Test-1 Epsilon 0 : :math:`\epsilon` = 0 | :math:`\alpha` = 0,5 | :math:`\gamma` = 0,7
+ - Première partie gagné par l'humain (AI retire 2 du tas 0)
+ - Deuxième humain partie perdu (AI retire 1 du tas 0)
+ - Troisième humain partie perdu (AI retire 1 du tas 0)
+ - Quatrième humain partie perdu (AI retire 1 du tas 0)
+
+Test-2 Epsilon 0,5 : :math:`\epsilon` = 0,5 | :math:`\alpha` = 0,5 | :math:`\gamma` = 0,7
+ - Première partie gagné par l'humain (AI retire 2 du tas 0)
+ - Deuxième humain partie perdu (AI retire 1 du tas 0)
+ - Troisième humain partie perdu (AI retire 1 du tas 0)
+ - Quatrième humain partie perdu (AI retire 1 du tas 0)
+
+Test-3 Epsilon 1 : :math:`\epsilon` = 1 | :math:`\alpha` = 0,5 | :math:`\gamma` = 0,7
+ - Première partie humain perdu (AI retire 1 du tas 0)
+ - Deuxième partie humain perdu (AI retire 1 du tas 0)
+ - Troisième partie humain perdu (AI retire 1 du tas 0)
+ - Quatrième partie humain perdu (AI retire 1 du tas 0)
+
+Test-4 Alpha 0 : :math:`\epsilon` = 0,1 | :math:`\alpha` = 0 | :math:`\gamma` = 0,7
+ - Première partie gagné par l'humain (AI retire 2 du tas 0)
+ - Deuxième partie humain perdu (AI retire 1 du tas 0)
+ - Troisième partie humain perdu (AI retire 1 du tas 0)
+ - Quatrième partie gagné par l'humain (AI retire 2 du tas 0)
+
+Test-5 Alpha 0,5 : :math:`\epsilon` = 0,1 | :math:`\alpha` = 0,5 | :math:`\gamma` = 0,7
+ - Première partie humain perdu (AI retire 1 du tas 0)
+ - Deuxième partie humain perdu (AI retire 1 du tas 0)
+ - Troisième partie humain perdu (AI retire 1 du tas 0)
+ - Quatrième partie gagné par l'humain (AI retire 2 du tas 0)
+
+Test-6 Alpha 1 : :math:`\epsilon` = 0,1 | :math:`\alpha` = 1 | :math:`\gamma` = 0,7
+ - Première partie humain perdu (AI retire 1 du tas 0)
+ - Deuxième partie humain perdu (AI retire 1 du tas 0)
+ - Troisième partie humain perdu (AI retire 1 du tas 0)
+ - Quatrième partie humain perdu (AI retire 1 du tas 0)
+
+Test-7 Gamma 0 : :math:`\epsilon` = 0,1 | :math:`\alpha` = 0,5 | :math:`\gamma` = 0
+ - Première partie gagné par l'humain (AI retire 2 du tas 0)
+ - Deuxième partie gagné par l'humain (AI retire 2 du tas 0)
+ - Troisième partie humain perdu (AI retire 1 du tas 0)
+ - Quatrième partie humain perdu (AI retire 1 du tas 0)
+
+Test-8 Gamma 0,5 : :math:`\epsilon` = 0,1 | :math:`\alpha` = 0,5 | :math:`\gamma` = 0,5
+ - Première partie humain perdu (AI retire 1 du tas 0)
+ - Deuxième partie humain perdu (AI retire 1 du tas 0)
+ - Troisième partie gagné par l'humain (AI retire 2 du tas 0)
+ - Quatrième partie humain perdu (AI retire 1 du tas 0)
+
+Test-9 Gamma 1 : :math:`\epsilon` = 0,1 | :math:`\alpha` = 0,5 | :math:`\gamma` = 1
+ - Première partie humain perdu (AI retire 1 du tas 0)
+ - Deuxième partie gagné par l'humain (AI retire 2 du tas 0)
+ - Troisième partie gagné par l'humain (AI retire 2 du tas 0)
+ - Quatrième partie humain perdu (AI retire 1 du tas 0)
+
+
 TODO: retroaction (5 points bonus)
   Produisez une rétroaction constructive afin d'améliorer ce TP.
